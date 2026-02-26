@@ -1,0 +1,36 @@
+using System.Text.RegularExpressions;
+
+string linhaDigitavelOriginal = "LINHA DIGITAVEL DE 47 DIGITOS" ?? "";
+string linhaFormatada;
+
+string numeros = Regex.Replace(linhaDigitavelOriginal ?? "", "[^0-9]", "");
+
+if (numeros.Length != 47)
+{
+    linhaFormatada = "Linha digitável inválida (não contém 47 dígitos)";
+}
+else
+{
+    string campo1 = numeros.Substring(0, 10);
+    string campo2 = numeros.Substring(10, 11);
+    string campo3 = numeros.Substring(21, 11);
+    string campo4 = numeros.Substring(32, 1);
+    string campo5 = numeros.Substring(33, 14);
+
+    linhaFormatada = string.Format("{0}.{1} {2}.{3} {4}.{5} {6} {7}",
+                                    campo1.Substring(0, 5), campo1.Substring(5, 5),
+                                    campo2.Substring(0, 5), campo2.Substring(5, 6),
+                                    campo3.Substring(0, 5), campo3.Substring(5, 6),
+                                    campo4,
+                                    campo5);
+}
+
+
+string linhaDigitalvelFormatada = linhaFormatada;
+
+
+
+
+
+
+
