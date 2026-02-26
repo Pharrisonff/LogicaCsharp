@@ -1,0 +1,128 @@
+string IdentificacaoFiscal = "025.584.685-11" ?? "";
+
+bool ValidarCPF(string cpf)
+{
+    if (string.IsNullOrWhiteSpace(cpf)) return false;
+
+    string somenteNumeros = "";
+    foreach (char c in cpf)
+    {
+        if (char.IsDigit(c))
+            somenteNumeros += c;
+    }
+
+    if (somenteNumeros.Length != 11)
+        return false;
+
+    bool todosIguais = true;
+    for(int i = 1; i < somenteNumeros.Length; i++)
+    {
+        if(somenteNumeros[i] != somenteNumeros[0])
+        {
+            todosIguais = false;
+            break;
+        }
+    }
+    if (todosIguais) return false;
+
+    int[] numeros = new int[11];
+    for (int i = 0; i < 11; i++)
+        numeros[i] = int.Parse(somenteNumeros[i].ToString());
+
+    int soma = 0;
+    for (int i = 0; i < 9; i++)
+        soma += numeros[i] * (10 - i);
+    int resto = soma % 11;
+    int digito1 = (resto < 2) ? 0 : 11 - resto;
+    if (numeros[9] != digito1) return false;
+
+    soma = 0;
+    for (int i = 0; i < 10; i++)
+        soma += numeros[i] * (11 - i);
+    resto = soma % 11;
+    int digito2 = (resto < 2) ? 0 : 11 - resto;
+    if (numeros[10] != digito2) return false;
+
+    return true;
+}
+
+bool ValidarCNPJ(string cnpj)
+{
+    if (string.IsNullOrWhiteSpace(cnpj)) return false;
+    
+    string somenteNumeros = "";
+    foreach (char c in cnpj)
+    {
+        if (char.IsDigit(c))
+            somenteNumeros += c;
+    }
+
+    if (somenteNumeros.Length != 14)
+        return false;
+
+    bool todosIguais = true;
+    for(int i = 1; i < somenteNumeros.Length; i++)
+    {
+        if(somenteNumeros[i] != somenteNumeros[0])
+        {
+            todosIguais = false;
+            break;
+        }
+    }
+    if (todosIguais) return false;
+
+    int[] numeros = new int[14];
+    for (int i = 0; i < 14; i++)
+        numeros[i] = int.Parse(somenteNumeros[i].ToString());
+
+    int[] pesos1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+    int soma = 0;
+    for (int i = 0; i < 12; i++)
+        soma += numeros[i] * pesos1[i];
+    
+    int resto = soma % 11;
+    int digito1 = (resto < 2) ? 0 : 11 - resto;
+    if (numeros[12] != digito1) return false;
+
+    int[] pesos2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+    soma = 0;
+    for (int i = 0; i < 13; i++)
+        soma += numeros[i] * pesos2[i];
+    
+    resto = soma % 11;
+    int digito2 = (resto < 2) ? 0 : 11 - resto;
+    if (numeros[13] != digito2) return false;
+
+    return true;
+}
+
+string ValidarIdentificacaoFiscal(string numero)
+{
+    if (string.IsNullOrWhiteSpace(numero)) return "Número não fornecido";
+
+    string somenteNumeros = "";
+    foreach (char c in numero)
+    {
+        if (char.IsDigit(c))
+            somenteNumeros += c;
+    }
+
+    if (somenteNumeros.Length == 11)
+    {
+        return ValidarCPF(somenteNumeros) ? "IdentificacaoFiscal válido" : "Ocorreram erros de validação";
+    }
+    else if (somenteNumeros.Length == 14)
+    {
+        return ValidarCNPJ(somenteNumeros) ? "IdentificacaoFiscal válido" : "Ocorreram erros de validação";
+    }
+    else
+    {
+        return "Ocorreram erros de validação";
+    }
+}
+
+
+
+bool checkValiation = ValidarIdentificacaoFiscal(IdentificacaoFiscal);
+
+
