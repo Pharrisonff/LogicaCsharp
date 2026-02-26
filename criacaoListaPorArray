@@ -1,0 +1,33 @@
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+string sListaCarteirasJson = "array para ser tratado"?.ToString() ?? "[]";
+
+JArray lisCarteiras = !string.IsNullOrWhiteSpace(sListaCarteirasJson)
+    ? JArray.Parse(sListaCarteirasJson)
+    : new JArray();
+
+JArray novaLista = new JArray();
+
+HashSet<string> papeisJaAdicionados = new HashSet<string>();
+
+foreach (JToken item in lisCarteiras)
+{
+    if (item is JObject jo)
+    {
+        string papel = jo["identificadorPapel"]?.Value<string>() ?? "";
+
+        if (!string.IsNullOrWhiteSpace(papel) && !papeisJaAdicionados.Contains(papel))
+        {
+            papeisJaAdicionados.Add(papel);
+
+            JObject novoItem = new JObject();
+            novoItem["nam"] = papel;
+            novoItem["val"] = papel;
+            novaLista.Add(novoItem);
+        }
+    }
+}
+
+string listaFormatada = novaLista.ToString(Formatting.None);
