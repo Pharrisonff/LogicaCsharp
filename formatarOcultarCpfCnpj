@@ -1,0 +1,23 @@
+using System.Text.RegularExpressions;
+string? FormatarDocumento(string documentoOriginal, bool anonimizar)
+{
+    if (string.IsNullOrWhiteSpace(documentoOriginal)) return "";
+
+    string apenasNumeros = Regex.Replace(documentoOriginal, "[^0-9]", "");
+    if (long.TryParse(apenasNumeros, out long num) && num == 0)
+    {
+        return "";
+    }
+
+    if (apenasNumeros.Length == 11)
+    {
+        if (anonimizar) { return "xxx." + apenasNumeros.Substring(3, 3) + "." + apenasNumeros.Substring(6, 3) + "-xx"; }
+        else { return Convert.ToUInt64(apenasNumeros).ToString(@"000\.000\.000\-00"); }
+    }
+    else if (apenasNumeros.Length == 14)
+    {
+        if (anonimizar) { return "xx." + apenasNumeros.Substring(2, 3) + "." + apenasNumeros.Substring(5, 3) + "/" + apenasNumeros.Substring(8, 4) + "-xx"; }
+        else { return Convert.ToUInt64(apenasNumeros).ToString(@"00\.000\.000\/0000\-00"); }
+    }
+    else { return apenasNumeros; }
+}
