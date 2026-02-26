@@ -1,0 +1,25 @@
+using System.Text.RegularExpressions;
+using System;
+
+string AplicarMascaraCpfCnpj(string documento)
+{
+    if (string.IsNullOrWhiteSpace(documento))
+        return "";
+
+    string numeros = Regex.Replace(documento, @"\D", "");
+
+    if (numeros.Length == 11) // CPF
+    {
+        // Formato: xxx.456.789-xx
+        return $"xxx.{numeros.Substring(3, 3)}.{numeros.Substring(6, 3)}-xx";
+    }
+    else if (numeros.Length == 14) // CNPJ
+    {
+        // Formato: xx.345.678/1000-xx
+        return $"xx.{numeros.Substring(2, 3)}.{numeros.Substring(5, 3)}/{numeros.Substring(8, 4)}-xx";
+    }
+    else
+    {
+        return "";
+    }
+}
