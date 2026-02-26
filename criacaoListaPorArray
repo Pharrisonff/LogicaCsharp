@@ -1,8 +1,27 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-string sListaCarteirasJson = "array para ser tratado"?.ToString() ?? "[]";
+string papeis = @"[
+    {
+      ""codigoCarteira"": 105,
+      ""identificadorPapel"": ""CDB-DI-POS"",
+      ""saldoAtual"": 50000.00,
+      ""saldoBruto"": 52500.50,
+      ""valorMinimoResgate"": 100.00,
+      ""valorMinimoPermanente"": 50.00
+    },
+    {
+      ""codigoCarteira"": 110,
+      ""identificadorPapel"": ""RDB-PRE"",
+      ""saldoAtual"": 15000.00,
+      ""saldoBruto"": 16200.75,
+      ""valorMinimoResgate"": 500.00,
+      ""valorMinimoPermanente"": 100.00
+    }
+  ]";
+
+
+string sListaCarteirasJson = papeis?.ToString() ?? "[]";
 
 JArray lisCarteiras = !string.IsNullOrWhiteSpace(sListaCarteirasJson)
     ? JArray.Parse(sListaCarteirasJson)
@@ -30,4 +49,6 @@ foreach (JToken item in lisCarteiras)
     }
 }
 
-string listaFormatada = novaLista.ToString(Formatting.None);
+string papeisFomatadosLista = novaLista.ToString(Formatting.None);
+
+Console.WriteLine(papeisFomatadosLista);
